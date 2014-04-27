@@ -12,7 +12,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.paitoanderson.stepcounter.R;
@@ -26,7 +25,7 @@ public class StepCounter extends Service implements SensorEventListener {
 
     // Notifications
     private static final Integer NOTIFICATION_ID = 7837;
-    private NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+    private Notification.Builder mBuilder = new Notification.Builder(this);
     private NotificationManager mNotificationManager;
 
     // Shared Preferences
