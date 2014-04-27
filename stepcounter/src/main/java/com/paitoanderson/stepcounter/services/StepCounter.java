@@ -86,7 +86,7 @@ public class StepCounter extends Service implements SensorEventListener {
     private void updateNotification(boolean firstTime) {
 
         // Update Step Count
-        mBuilder.setContentText("Step Count: " + Preferences.getStepCount(this));
+        mBuilder.setContentTitle(Preferences.getStepCount(this) + " steps taken");
 
         Notification notification;
 
@@ -94,7 +94,7 @@ public class StepCounter extends Service implements SensorEventListener {
         if (firstTime) {
             mBuilder.setSmallIcon(R.drawable.ic_stat_feet);
             mBuilder.setPriority(-1);
-            mBuilder.setContentTitle("Step Counter - Counting");
+            mBuilder.setContentText("Step Counter - Counting");
             mBuilder.setOngoing(true);
             mBuilder.setAutoCancel(false);
             mBuilder.setOnlyAlertOnce(true);
