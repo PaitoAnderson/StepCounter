@@ -1,10 +1,12 @@
 package com.paitoanderson.stepcounter.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,9 +24,13 @@ import com.paitoanderson.stepcounter.receivers.NotificationReceiver;
  */
 public class StepCounter extends Service implements SensorEventListener {
 
+    // Notifications
     private static final Integer NOTIFICATION_ID = 7837;
     private NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
     private NotificationManager mNotificationManager;
+
+    // Shared Preferences
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -45,7 +51,18 @@ public class StepCounter extends Service implements SensorEventListener {
         }
 
         // Setup First Notification
-        updateNotification(true, 0);
+        updateNotification(true);
+
+        // Setup Shared Preference Change Listener
+        SharedPreferences sharedPreferences = getSharedPreferences("stepcounter_prefs", MODE_PRIVATE);
+        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                // Update Notification Bar
+                updateNotification(false);
+            }
+        };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
         // Restart the service if its killed
         return START_STICKY;
@@ -53,9 +70,6 @@ public class StepCounter extends Service implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        // Update Notification
-        updateNotification(false, (int) event.values[0]);
 
         // Record Step Count
         Preferences.setStepCount(this, (int) event.values[0]);
@@ -70,10 +84,12 @@ public class StepCounter extends Service implements SensorEventListener {
         return null;
     }
 
-    private void updateNotification(boolean firstTime, int stepCount) {
+    private void updateNotification(boolean firstTime) {
 
         // Update Step Count
-        mBuilder.setContentText("Step Count: " + String.format("%,d", stepCount));
+        mBuilder.setContentText("Step Count: " + Preferences.getStepCount(this));
+
+        Notification notification;
 
         // First Time Setup
         if (firstTime) {
@@ -91,10 +107,10 @@ public class StepCounter extends Service implements SensorEventListener {
             mBuilder.addAction(R.drawable.ic_stat_share, "Share", pShareIntent);
 
             // Reset Button
-            //Intent resetIntent = new Intent(this, NotificationReceiver.class);
-            //resetIntent.setAction("RESET");
-            //PendingIntent pResetIntent = PendingIntent.getBroadcast(this, 0, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            //mBuilder.addAction(R.drawable.ic_stat_reset, "Reset", pResetIntent);
+            Intent resetIntent = new Intent(this, NotificationReceiver.class);
+            resetIntent.setAction("RESET");
+            PendingIntent pResetIntent = PendingIntent.getBroadcast(this, 0, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(R.drawable.ic_stat_reset, "Reset", pResetIntent);
 
             // Close Button
             Intent closeIntent = new Intent(this, NotificationReceiver.class);
@@ -102,10 +118,14 @@ public class StepCounter extends Service implements SensorEventListener {
             PendingIntent pCloseIntent = PendingIntent.getBroadcast(this, 0, closeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(R.drawable.ic_stat_cancel, "Close", pCloseIntent);
 
+            notification = mBuilder.build();
+
             // Set Service to run in the Foreground
-            startForeground(NOTIFICATION_ID, mBuilder.build());
+            startForeground(NOTIFICATION_ID, notification);
+        } else {
+            notification = mBuilder.build();
         }
 
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        mNotificationManager.notify(NOTIFICATION_ID, notification);
     }
 }

@@ -14,14 +14,31 @@ public class Preferences {
     // How many steps have I walked?
     public static String getStepCount(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        return String.format("%,d", prefs.getInt("stopCount", 0));
+        return String.format("%,d", (prefs.getInt("stepCount", 0) - prefs.getInt("stepCountSubtract", 0)));
     }
 
     // Set how many steps I have walked.
-    public static void setStepCount(Context context, Integer newValue) {
+    public static void setStepCount(Context context, Integer steps) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putInt("stopCount", newValue);
+        prefsEditor.putInt("stepCount", steps);
+        prefsEditor.commit();
+    }
+
+    // Set Subtract Step Count (Reset)
+    public static void resetStepCount(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putInt("stepCountSubtract", prefs.getInt("stepCount", 0));
+        prefsEditor.commit();
+    }
+
+    // Reset the Subtract Step Count (On Boot)
+    public static void clearStepCount(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putInt("stepCountSubtract", 0);
+        prefsEditor.putInt("stepCount", 0);
         prefsEditor.commit();
     }
 }

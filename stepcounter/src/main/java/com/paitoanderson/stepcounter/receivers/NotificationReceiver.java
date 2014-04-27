@@ -20,7 +20,15 @@ public class NotificationReceiver extends BroadcastReceiver {
             // Stop Service
             Intent stopIntent = new Intent(context, StepCounter.class);
             context.stopService(stopIntent);
+        } else if (intent.getAction().equals("RESET")) {
+
+            // Reset Step Counter
+            Preferences.resetStepCount(context);
+
         } else if (intent.getAction().equals("SHARE")) {
+
+            // Close Notification Drawer
+            context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
 
             // Share Intent
             Intent shareIntent = new Intent();

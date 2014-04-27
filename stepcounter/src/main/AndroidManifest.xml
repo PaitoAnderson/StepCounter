@@ -5,6 +5,9 @@
     <!-- Hardware Feature Required for Step Counter to function -->
     <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="true"/>
 
+    <!-- Permission Required for Starting the Step Counter at Boot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -22,6 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Receiver for Starting Step Counter on Boot -->
+        <receiver android:name=".receivers.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!-- Receiver for Notification Buttons -->
         <receiver android:name=".receivers.NotificationReceiver" />
