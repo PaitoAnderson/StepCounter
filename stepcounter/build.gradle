@@ -1,6 +1,22 @@
 apply plugin: 'android'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file("../Android Keys.jks")
+            storePassword "StepCounter"
+            keyAlias "com.paitoanderson.stepcounter"
+            keyPassword "StepCounter"
+        }
+    }
+    buildTypes {
+        debug {
+            packageNameSuffix ".dev"
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion "19.0.3"
 
