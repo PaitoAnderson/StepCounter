@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
@@ -11,18 +11,19 @@ android {
     }
     buildTypes {
         debug {
-            packageNameSuffix ".dev"
+            applicationIdSuffix ".dev"
         }
         release {
             signingConfig signingConfigs.release
         }
     }
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
+        applicationId "com.paitoanderson.stepcounter"
         minSdkVersion 19
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }

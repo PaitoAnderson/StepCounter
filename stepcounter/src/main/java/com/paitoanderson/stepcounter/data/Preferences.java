@@ -22,7 +22,7 @@ public class Preferences {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putInt("stepCount", steps);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     // Set Subtract Step Count (Reset)
@@ -30,7 +30,7 @@ public class Preferences {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putInt("stepCountSubtract", prefs.getInt("stepCount", 0));
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     // Reset the Subtract Step Count (On Boot)
@@ -39,6 +39,6 @@ public class Preferences {
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putInt("stepCountSubtract", 0);
         prefsEditor.putInt("stepCount", 0);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 }
