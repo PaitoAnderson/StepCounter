@@ -14,8 +14,13 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        // TODO: Sync existing steps with FitBit?
+
         // Clear Steps
         Preferences.clearStepCount(context);
+
+        // Set now as the last FitBit sync
+        Preferences.setFitbitSyncDate(context, System.currentTimeMillis());
 
         // Start Step Counter service
         Intent myIntent = new Intent(context, StepCounter.class);

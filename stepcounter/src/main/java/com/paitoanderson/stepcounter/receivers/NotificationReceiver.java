@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.paitoanderson.stepcounter.data.Preferences;
 import com.paitoanderson.stepcounter.services.StepCounter;
+import com.paitoanderson.stepcounter.share.FitbitApiShare;
 
 /**
  * Created by Paito Anderson on 2014-04-26.
@@ -24,7 +25,14 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             // Reset Step Counter
             Preferences.resetStepCount(context);
+        } else if (intent.getAction().equals(("FITBIT"))) {
 
+            // Close Notification Drawer
+            context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+
+            // Send Steps / Reset Count
+            FitbitApiShare fitbitApiShare = new FitbitApiShare();
+            fitbitApiShare.sendSteps(context, Preferences.getStepCount(context));
         } else if (intent.getAction().equals("SHARE")) {
 
             // Close Notification Drawer

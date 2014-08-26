@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 
+import com.paitoanderson.stepcounter.data.Preferences;
 import com.paitoanderson.stepcounter.services.StepCounter;
 
 /**
@@ -19,6 +23,19 @@ public class MainActivity extends Activity {
 
         // Check if the service is running
         if (!isServiceRunning()) {
+
+            // Set system boot time as last sync unless last sync is more recent
+            // The reason for doing this is Android *could* start counting steps when the system starts up and not sync'd them yet
+            if (Preferences.getFitbitSyncDate(this) < SystemClock.elapsedRealtime())
+            {
+                // If no steps are recorded don't bother
+                if (Preferences.getStepCount(this) == 0) {
+                    Preferences.setFitbitSyncDate(this, System.currentTimeMillis());
+                } else {
+                    Preferences.setFitbitSyncDate(this, SystemClock.elapsedRealtime());
+                }
+            }
+
             // Start Step Counting service
             Intent serviceIntent = new Intent(this, StepCounter.class);
             startService(serviceIntent);

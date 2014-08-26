@@ -99,11 +99,11 @@ public class StepCounter extends Service implements SensorEventListener {
             mBuilder.setAutoCancel(false);
             mBuilder.setOnlyAlertOnce(true);
 
-            // Share Button
-            Intent shareIntent = new Intent(this, NotificationReceiver.class);
-            shareIntent.setAction("SHARE");
-            PendingIntent pShareIntent = PendingIntent.getBroadcast(this, 0, shareIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.addAction(R.drawable.ic_stat_share, "Share", pShareIntent);
+            // FitBit Button
+            Intent fitbitIntent = new Intent(this, NotificationReceiver.class);
+            fitbitIntent.setAction("FITBIT");
+            PendingIntent pShareIntent = PendingIntent.getBroadcast(this, 0, fitbitIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(R.drawable.ic_stat_share, "FitBit", pShareIntent);
 
             // Reset Button
             Intent resetIntent = new Intent(this, NotificationReceiver.class);
