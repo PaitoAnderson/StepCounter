@@ -25,17 +25,15 @@ public class StepCounter extends Service implements SensorEventListener {
 
     // Notifications
     private static final Integer NOTIFICATION_ID = 7837;
-    private Notification.Builder mBuilder = new Notification.Builder(this);
+    private Notification.Builder mBuilder;
     private NotificationManager mNotificationManager;
-
-    // Shared Preferences
-    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
         // Get Notification Manager
+        mBuilder = new Notification.Builder(this);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Setup Step Counter
@@ -54,7 +52,7 @@ public class StepCounter extends Service implements SensorEventListener {
 
         // Setup Shared Preference Change Listener
         SharedPreferences sharedPreferences = getSharedPreferences("stepcounter_prefs", MODE_PRIVATE);
-        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 // Update Notification Bar

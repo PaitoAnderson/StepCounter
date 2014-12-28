@@ -11,6 +11,7 @@ android {
     }
     buildTypes {
         debug {
+            useJack true
             applicationIdSuffix ".dev"
         }
         release {
@@ -18,18 +19,18 @@ android {
         }
     }
     compileSdkVersion 21
-    buildToolsVersion "21.0.2"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.paitoanderson.stepcounter"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 101
+        versionName "1.0.1"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
