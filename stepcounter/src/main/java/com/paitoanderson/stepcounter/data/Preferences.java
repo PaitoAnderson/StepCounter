@@ -11,6 +11,20 @@ public class Preferences {
     // Identify Shared Preference Store
     public final static String PREFS_NAME = "stepcounter_prefs";
 
+    // Should the Step Counting Service be running?
+    public static boolean shouldServiceRun(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        return prefs.getBoolean("serviceRunning", false);
+    }
+
+    // Should the Step Counting Service be running?
+    public static void setServiceRun(Context context, boolean running) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putBoolean("serviceRunning", running);
+        prefsEditor.apply();
+    }
+
     // How many steps have I walked?
     public static String getStepCount(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);

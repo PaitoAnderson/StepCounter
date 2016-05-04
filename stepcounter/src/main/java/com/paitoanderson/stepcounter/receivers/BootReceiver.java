@@ -17,8 +17,12 @@ public class BootReceiver extends BroadcastReceiver {
         // Clear Steps
         Preferences.clearStepCount(context);
 
-        // Start Step Counter service
-        Intent myIntent = new Intent(context, StepCounter.class);
-        context.startService(myIntent);
+        // Check if the Step Counter service was running?
+        if (Preferences.shouldServiceRun(context))
+        {
+            // Start Step Counter service
+            Intent myIntent = new Intent(context, StepCounter.class);
+            context.startService(myIntent);
+        }
     }
 }

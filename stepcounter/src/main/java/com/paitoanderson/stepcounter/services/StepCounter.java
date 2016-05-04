@@ -96,6 +96,7 @@ public class StepCounter extends Service implements SensorEventListener {
             mBuilder.setOngoing(true);
             mBuilder.setAutoCancel(false);
             mBuilder.setOnlyAlertOnce(true);
+            mBuilder.setVisibility(Notification.VISIBILITY_SECRET);
 
             // Share Button
             Intent shareIntent = new Intent(this, NotificationReceiver.class);

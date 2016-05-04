@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.paitoanderson.stepcounter.data.Preferences;
 import com.paitoanderson.stepcounter.services.StepCounter;
 
 /**
@@ -19,6 +20,10 @@ public class MainActivity extends Activity {
 
         // Check if the service is running
         if (!isServiceRunning()) {
+
+            // Mark Service as Started
+            Preferences.setServiceRun(this, false);
+
             // Start Step Counting service
             Intent serviceIntent = new Intent(this, StepCounter.class);
             startService(serviceIntent);

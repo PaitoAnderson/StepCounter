@@ -17,6 +17,9 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         if (intent.getAction().equals("CLOSE")) {
 
+            // Mark Service as Stopped
+            Preferences.setServiceRun(context, false);
+
             // Stop Service
             Intent stopIntent = new Intent(context, StepCounter.class);
             context.stopService(stopIntent);
